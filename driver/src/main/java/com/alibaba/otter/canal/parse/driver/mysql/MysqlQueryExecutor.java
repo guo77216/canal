@@ -125,6 +125,9 @@ public class MysqlQueryExecutor {
             while (true) {
                 body = readNextPacket();
                 if (body[0] == -2) {
+                    EOFPacket packet = new EOFPacket();
+                    packet.fromBytes(body);
+                    moreResult = (packet.statusFlag & 0x0008) != 0;
                     break;
                 }
                 RowDataPacket rowDataPacket = new RowDataPacket();
